@@ -1,14 +1,6 @@
-import subprocess
-
+    # import subprocess
 
 def menu():
-    """
-    Display a set of options to the user,
-    accept the user's choice,
-    do a basic validation
-    if correct value, return the same
-    else return -1
-    """
     print("*** MAIN MENU ***")
     print("=================")
     print("0. Exit")
@@ -24,7 +16,6 @@ def menu():
     except:
         choice = -1
         
-
     return choice
 
 books = [
@@ -32,6 +23,8 @@ books = [
     {'id': 33, 'title': 'Python Unleashed', 'author': 'John MIller', 'price': 999.0},
     {'id': 298, 'title': 'Java made easy', 'author': 'Rajesh Rao', 'price': 1499.0},
 ]
+
+#------------------------------------------------------------------------------
 
 def add_book():
     b = {}
@@ -60,6 +53,7 @@ def add_book():
     books.append(b)
 
 
+#------------------------------------------------------------------------------
 def view_books():
     print("-"*98)
     print(f"{"ID":^10} {"Title":<35} {"Author":<35} {"Price":>15}")
@@ -69,6 +63,7 @@ def view_books():
     print("="*98)
 
 
+#------------------------------------------------------------------------------
 def edit_book():
     while True:
         try:
@@ -105,7 +100,7 @@ def edit_book():
     if _author == "":
         _author = author
 
-    _price = input(f'Price: ({' '}) ')
+    _price = input(f'Price: ({'price'}) ')
     if _price == "":
         _price = price
     else:
@@ -122,6 +117,7 @@ def edit_book():
     print("The book is updated successfully!")
 
 
+#------------------------------------------------------------------------------
 def delete_book():
     while True:
         try:
@@ -155,11 +151,11 @@ def delete_book():
         print("Book deleted successfully!")
     else:
         print("Book was not deleted!")
-
+#------------------------------------------------------------------------------
 
 def main():
     while True:
-        subprocess.call(["cls"], shell=True)
+        # subprocess.call(["cls"], shell=True)
         user_choice = menu()
 
         if user_choice == 0:
@@ -183,3 +179,18 @@ def main():
 
 print("-" * 80)
 main()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

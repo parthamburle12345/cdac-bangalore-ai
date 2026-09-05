@@ -1,3 +1,7 @@
+"""
+Product Inventory Management System
+"""
+
 products = [ 
     {"id": 1, "name": "Laptop", "category": "Electronics", "price": 55000, "quantity": 10}, 
     {"id": 3, "name": "Smartphone", "category": "Electronics", "price": 20000, "quantity": 25} ,
@@ -7,9 +11,8 @@ products = [
     {"id": 6, "name": "Smartphone", "category": "Electronics", "price": 200000, "quantity": 2} ,
 ] 
 
-id_counter = len(products)
+counter = len(products)
 
-#-------------------------------------------------------------------------------------
 
 def menu():
     menu_text = '''1. Add Product 
@@ -28,52 +31,53 @@ def menu():
 
     return choice
 
-#-------------------------------------------------------------------------------------
-
 
 def add_product():
-    global id_counter
+    global counter
+
     try:
-        print('**** Add new product details ****')
-        name = input('Name: ').strip()
-        if name == '':
-            print('Name cannot be empty!')
+    
+        name = input("enter a name:").strip()
+        if name == "":
+            print("name is not entered.")
             return
-        
-        category = input('Category: ').strip()
-        if category == '':
-            print('Category cannot be empty!')
+
+        category = input("enter category:")
+        if category == "":
+            print("enter valid category:")
             return
-        
+
         price = float(input('Price: '))
         if price <= 0:
             print('Price must be > 0')
             return
-
+        
         quantity = int(input('Quantity: '))
         if quantity < 0:
             print('Quantity must be >= 0')
             return
+         
 
-        products.append(dict(id=id_counter+1, name=name, category=category, price=price, quantity=quantity))
-        id_counter += 1
+        products.append(dict(id=counter+1, name=name, category=category, price=price, quantity=quantity)) 
+        counter+=1
 
-    except ValueError:
-        print('Please retry with a numerical value')
+    except  ValueError:
+        print("retry with numerical value:") 
 
-#-------------------------------------------------------------------------------------
+
+#-------------------------------------------------------------------------------
 
 def print_one_product(p):
-    pid, name, category, price, quantity = p.values()
+    pid, name, category, price, quantity = p.values()    
     print('---- Product Details ----')
     print(f'ID          : {pid}')
     print(f'Name        : {name}')
     print(f'Category    : {category}')
     print(f'Price       : {price}')
     print(f'Quantity    : {quantity}')
-    print('-'*50)    
+    print('-'*50) 
 
-#-------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 
 def print_many_products(product_list):
     print('-'*60)
@@ -83,6 +87,26 @@ def print_many_products(product_list):
         pid, name, category, price, quantity = p.values()
         print(f'{pid:^5}{name:<20}{category:<20}{price:>10.2f}{quantity:>5}')
     print('-'*60)
+
+#-------------------------------------------------------------------------------
+
+def search_product():
+    try:
+        print("enter id:")
+        print("enter name:")
+        choice = int(input("enter your choice 1 or 2:"))
+
+        if choice == 1:
+            pid = int(input("enter if od product to be search:"))
+            search_product_by_id(pid)
+        elif choice == 2:
+            search_product_by_name()
+        else:
+            print("invalid choice.try again.")
+
+    except:
+        print("try again with integer value:")
+    
 
 #-------------------------------------------------------------------------------------
 
@@ -96,60 +120,82 @@ def view_products():
 
 #-------------------------------------------------------------------------------------
 
-def search_product():
-    try:
-        print('1. Search by id')
-        print('2. Search by name')
-        choice = int(input('Enter your choice: '))
-
-        if choice == 1:
-            pid = int(input('Enter the id of the product to search: '))
-            search_product_by_id(pid)
-        elif choice == 2:
-            search_product_by_name()
-        else:
-            print('Invalid choice. Please try again.')
-    except:
-        print('Please try again with an integer input.')
-
-#-------------------------------------------------------------------------------------
 def search_product_by_id(pid):
-    result = [p for p in products if p['id']==pid]
+    result = []
+    for p in products:
+        if p["id"] == pid:
+            result.append(p)
+            
     if not result:
         print(f'No product found for id {pid}')
         return None
 
     print_one_product(result[0])
     return result[0]
-#-------------------------------------------------------------------------------------
-def search_product_by_name():
-    name = input('Enter the name of the product to search: ')
-    result = [p for p in products if p['name']==name]
-    if not result:
-        print(f'No product found for name "{name}"')
-        return
+#-----------------------------------------------------------------------------------
+def update_product():
+    
+    try:
+        pid = int(input("Enter id of product to update: "))
 
+        p = search_product_by_id(pid)
+
+        if p is None:
+            return
+
+        name = input("Enter new name: ").strip()
+        category = input("Enter new category: ").strip()
+        price = float(input("Enter new price: "))
+        quantity = int(input("Enter new quantity: "))
+
+        p["name"] = name
+        p["category"] = category
+        p["price"] = price
+        p["quantity"] = quantity
+
+        print("Product updated successfully!")
+
+    except ValueError:
+        print("Please enter valid values.")
+
+
+#-----------------------------------------------------------------------------------
+
+def search_product_by_name():
+    name=input("enter a name:")
+    result=[]
+
+    for p in products:
+        if p["name"] == name:
+            result.append(p)
+    if not result:
+        print(f"{name} not found")
+        return    
+    
     if len(result) == 1:
         print_one_product(result[0])
     else:
         print_many_products(result)
-#-------------------------------------------------------------------------------------
+
+
+#-------------------------------------------------------------------------------
+
 def delete_product():
     try:
-        pid = int(input('Enter id of the product to delete: '))
+        pid = int(input("enter number to be deleted:"))
         p = search_product_by_id(pid)
         if p is None:
             return
-
-        ans = input('Are you sure to delete this product? (y/n): ').lower()
+        ans = input("are you sure want to delete product(yes/no)?").lower()
 
         if ans == 'y':
             products.remove(p)
-            print('Product deleted successfully!')
-        
-    except:
+            print("product deleted succesfully.")
+    except :
         print('Invalid type of value for product id. Try again with an integer.')
-#-------------------------------------------------------------------------------------
+
+
+#-----------------------------------------------------------------------------------
 def main():
     while True:
         choice = menu()
@@ -162,7 +208,7 @@ def main():
             case 3:
                 search_product()
             case 4:
-                ...
+                update_product()
             case 5:
                 delete_product()
             case 6:
