@@ -1,4 +1,8 @@
-    # import subprocess
+"""
+Product Inventory Management System 
+"""
+
+import subprocess
 
 def menu():
     print("*** MAIN MENU ***")
@@ -155,7 +159,7 @@ def delete_book():
 
 def main():
     while True:
-        # subprocess.call(["cls"], shell=True)
+        subprocess.call(["cls"], shell=True)
         user_choice = menu()
 
         if user_choice == 0:

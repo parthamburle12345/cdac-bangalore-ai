@@ -1,0 +1,11 @@
+"""
+STUDENT GRADE & ASSESSMENT MODULE
+(JSON File Persistence & Modular Analytics)
+"""
+
+
+
+students = [
+    {"id": 1, "name": "Aarav Sharma", "course": "Python Core", "marks": 88.5, "grade": "A"},
+    {"id": 2, "name": "Diya Patel",   "course": "Data Science", "marks": 74.0, "grade": "B"}
+]
