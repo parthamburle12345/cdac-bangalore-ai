@@ -12,14 +12,6 @@ students = [
     {"id": 2, "name": "Diya Patel", "course": "Data Science",
      "marks": 74.0, "grade": "B"},
 
-    {"id": 3, "name": "Rohan Nair", "course": "Web Architecture",
-     "marks": 45.0, "grade": "F"},
-
-    {"id": 4, "name": "Sneha Kulkarni", "course": "Python Core",
-     "marks": 92.0, "grade": "A"},
-
-    {"id": 5, "name": "Amit Verma", "course": "Data Science",
-     "marks": 63.5, "grade": "C"}
 ]
 
 counter = len(students)
@@ -63,7 +55,7 @@ def menu():
 
 #=================================================================
 
-def enroll_student():
+def enroll_student():       #Add a new student to the system.
     global counter
 
     try:
@@ -143,7 +135,7 @@ def print_many_students(student_list):
 
 #=================================================================
 
-def cohort_directory():
+def cohort_directory():     #View/list all students in the group/batch.
     if len(students) == 0:
         print("No student records available.")
         return
@@ -168,6 +160,7 @@ def search_by_id(student_id):
 
     print_one_student(result[0])
     return result[0]
+#=================================================================
 
 
 def search_by_name_or_course(search_term):
@@ -189,8 +182,9 @@ def search_by_name_or_course(search_term):
 
     return result
 
+#=================================================================
 
-def query_records():
+def query_records():        #Search for a particular student's record.
     print("\n1. Search by Student ID")
     print("2. Search by Name/Course")
 
@@ -218,7 +212,7 @@ def query_records():
 
 #=================================================================
 
-def revise_evaluation():
+def revise_evaluation():        #Update/change a student's marks or evaluation.
     try:
         student_id = int(input("Enter student id to update: "))
 
@@ -278,7 +272,7 @@ def revise_evaluation():
 
 #=================================================================
 
-def purge_record():
+def purge_record():     #Delete/remove a student's record.
     try:
         student_id = int(input("Enter student id to delete: "))
 
@@ -287,9 +281,7 @@ def purge_record():
         if student is None:
             return
 
-        answer = input(
-            "Are you sure you want to delete this record? (y/n): "
-        ).lower()
+        answer = input("Are you sure you want to delete this record? (y/n): ").lower()
 
         if answer == "y":
             students.remove(student)
