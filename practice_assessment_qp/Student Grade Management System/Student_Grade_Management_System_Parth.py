@@ -59,7 +59,7 @@ def enroll_student():
             return
 
         marks = float(input("Enter Marks:"))
-        if marks < 0.0 or marks >-100.0:
+        if marks < 0.0 or marks >=100.0:
             print("marks should be between 0.0 ≤ marks ≤ 100.0.")
             return
         grade = calculate_grade(marks)
@@ -116,7 +116,7 @@ def cohort_directory():
     if len(students) == 0:
         print("no student found.")
 
-    if len(student) == 1:
+    if len(students) == 1:
         print_one_student(students[0])
     else:
         print_many_students(students)
@@ -187,21 +187,129 @@ def query_record():
 
 #==============================================================================
 
+def purge_record():
+    try:
+        student_id = int(input("enter a student id to be deleted:"))
+        student = search_by_id(student_id)
 
+        if student is None:
+            return
 
+        answer = input("are you sure you wanna delete recode?(y/n)")
+        if answer == 'y':
+            students.remove(student)
+            print("student record is deleted successfully!!")
+        else:
+            print("delete operation is cancelled.")
+        
 
-
-
-
-
-
-
-
-
-
-
+    except ValueError:
+        print("invalid student id . retry")
 
 #=================================================================
+
+
+def save_to_json():
+    try:
+        with open("students.json", "w") as file:
+            json.dump(students,file, indent=4)
+        print("Records saved to students.json successfully.")
+    except Exception:
+        print("error while saving records.")
+
+#=================================================================
+def load_from_file():
+    global students 
+    global counter
+
+    try:
+        with open("students.json", "r") as file:
+            new_students = json.load(file)
+
+        students = new_students
+
+        if len(students) > 0:
+            max_id = students[0]["id"]
+
+            for s in students:
+                if s["id"] > max_id:
+                    max_id = s["id"]
+
+            counter = max_id
+        else:
+            counter = 0
+
+        print("Records loaded from students.json successfully.")
+
+    except FileNotFoundError:
+        print("students.json file not found.")
+
+    except json.JSONDecodeError:
+        print("Invalid data found in students.json.")
+
+    except Exception:
+        print("Error while loading records.")        
+
+#=================================================================
+def revise_evaluation():        #Update/change a student's marks or evaluation.
+    try:
+        student_id = int(input("Enter student id to update: "))
+
+        student = search_by_id(student_id)
+
+        if student is None:
+            return
+
+        # --- Name ---
+        name_input = input(f"Enter new name ({student['name']}): ").strip()
+
+        if name_input == "":
+            name = student["name"]
+        else:
+            name = name_input
+
+        # --- Course ---
+        course_input = input(f"Enter new course ({student['course']}): ").strip()
+
+        if course_input == "":
+            course = student["course"]
+        else:
+            course = course_input
+
+        # --- Marks ---
+        marks_input = input(f"Enter new marks ({student['marks']}): ").strip()
+
+        if marks_input == "":
+            marks = student["marks"]
+            grade = student["grade"]
+
+        else:
+            try:
+                marks = float(marks_input)
+
+                if marks < 0.0 or marks > 100.0:
+                    print("Invalid marks. Marks remain unchanged.")
+                    marks = student["marks"]
+                    grade = student["grade"]
+                else:
+                    grade = calculate_grade(marks)
+
+            except ValueError:
+                print("Invalid marks. Marks remain unchanged.")
+                marks = student["marks"]
+                grade = student["grade"]
+
+        student["name"] = name
+        student["course"] = course
+        student["marks"] = marks
+        student["grade"] = grade
+
+        print("Student record updated successfully.")
+    except ValueError:
+        print("invalid student id.please enter an integer.")
+#=================================================================
+
+
 
 def main():
     while True:
@@ -217,23 +325,23 @@ def main():
                 cohort_directory()
 
             case 3:
-                query_records()
+                query_record()
 
-            # case 4:
-                # revise_evaluation()
+            case 4:
+                revise_evaluation()
 
-            # case 5:
-            #     # purge_record()
+            case 5:
+                purge_record()
 
-            # case 6:
-            #     # save_to_json()
+            case 6:
+                save_to_json()
 
-            # case 7:
-            #     # load_from_json()
+            case 7:
+                load_from_file()
 
-            # case 8:
-            #     # print("Terminating program...")
-            #     # break
+            case 8:
+                print("Terminating program...")
+                break
 
             case _:
                 print("Invalid choice. Please retry.")
